@@ -20,8 +20,12 @@ public class Main {
         Student[] students = {new Student(1, "1"), new Student(2, "2")};
         Test person = new Test(2, map, list, students, new Student(3, "3"), k);
         Json json = new Json();
+
+        System.out.println(json.toJson(null));
         System.out.println(json.toJson(person));
+
         Gson gson = new Gson();
+        System.out.println(gson.toJson(null));
         System.out.println(gson.toJson(person));
     }
 }

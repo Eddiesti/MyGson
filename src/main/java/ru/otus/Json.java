@@ -11,6 +11,9 @@ import java.util.Map;
 
 public class Json {
     public String toJson(Object object) {
+        if (object == null) {
+            return JSONValue.toJSONString(null);
+        }
         if (checkPrimitiveFields(object.getClass())) {
             return JSONValue.toJSONString(object);
         }
@@ -44,21 +47,25 @@ public class Json {
                 e.printStackTrace();
             }
             if (!Modifier.isTransient(field.getModifiers())) {
-                if (checkPrimitiveFields(field.getType()) || value instanceof Map) {
-                    jsonObject.put(name, value);
+                if (value == null) {
+                    jsonObject.put(name, null);
                 } else {
-                    if (value instanceof Iterable || value.getClass().isArray()) {
-                        Iterable<Object> list;
-                        if (value.getClass().isArray()) {
-                            list = arrayToList(value);
-                        } else {
-                            list = (Iterable<Object>) value;
-                        }
-                        JSONArray jsonArray = jsonToArray(list);
-                        jsonObject.put(name, jsonArray);
+                    if (checkPrimitiveFields(field.getType()) || value instanceof Map) {
+                        jsonObject.put(name, value);
                     } else {
-                        JSONObject jsonObject1 = jsonToObject(value);
-                        jsonObject.put(name, jsonObject1);
+                        if (value instanceof Iterable || value.getClass().isArray()) {
+                            Iterable<Object> list;
+                            if (value.getClass().isArray()) {
+                                list = arrayToList(value);
+                            } else {
+                                list = (Iterable<Object>) value;
+                            }
+                            JSONArray jsonArray = jsonToArray(list);
+                            jsonObject.put(name, jsonArray);
+                        } else {
+                            JSONObject jsonObject1 = jsonToObject(value);
+                            jsonObject.put(name, jsonObject1);
+                        }
                     }
                 }
             }
@@ -69,13 +76,23 @@ public class Json {
     private JSONArray jsonToArray(Iterable<Object> collection) {
         JSONArray jsonArray = new JSONArray();
         for (Object aCollection : collection) {
-            jsonArray.add(aCollection);
+            Object obj = checkPrimitiveFields(aCollection.getClass())
+                    ? aCollection
+                    : jsonToObject(aCollection);
+            jsonArray.add(obj);
         }
         return jsonArray;
     }
 
     private boolean checkPrimitiveFields(Class clazz) {
         return clazz.isPrimitive() ||
+                clazz.equals(Integer.class) ||
+                clazz.equals(Boolean.class) ||
+                clazz.equals(Byte.class) ||
+                clazz.equals(Double.class) ||
+                clazz.equals(Byte.class) ||
+                clazz.equals(Float.class) ||
+                clazz.equals(Long.class) ||
                 clazz.equals(String.class);
     }
 
