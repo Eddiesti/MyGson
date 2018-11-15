@@ -44,7 +44,7 @@ public class Json {
                 e.printStackTrace();
             }
             if (!Modifier.isTransient(field.getModifiers())) {
-                if (value == null || checkPrimitiveFields(field.getType()) || value instanceof Map) {
+                if (checkPrimitiveFields(field.getType()) || value instanceof Map) {
                     jsonObject.put(name, value);
                 } else {
                     if (value instanceof Iterable || value.getClass().isArray()) {
@@ -80,12 +80,11 @@ public class Json {
     }
 
     private List<Object> arrayToList(Object array) {
-
         List<Object> list = new ArrayList<>();
         int length = Array.getLength(array);
         for (int i = 0; i < length; i++) {
-            Object elemnt = Array.get(array, i);
-            list.add(elemnt);
+            Object element = Array.get(array, i);
+            list.add(element);
         }
         return list;
     }

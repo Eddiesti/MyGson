@@ -14,6 +14,9 @@ public class JsonTest {
     Map map = new HashMap();
     List list = new ArrayList();
     String string;
+    Json json = new Json();
+    Gson gson = new Gson();
+
 
     @Before
     public void init() {
@@ -24,24 +27,30 @@ public class JsonTest {
     }
 
     @Test
-    public void toJson() {
-        Json json = new Json();
-        Gson gson = new Gson();
-
+    public void testArrayToJson() {
         String json1 = json.toJson(strings);
         String gson1 = gson.toJson(strings);
-        assertEquals(json1, gson1);
+        assertEquals(gson1, json1);
+    }
 
+    @Test
+    public void testMapToJson() {
         String json2 = json.toJson(map);
         String gson2 = gson.toJson(map);
-        assertEquals(json2, gson2);
+        assertEquals(gson2, json2);
+    }
 
+    @Test
+    public void testListTOJson() {
         String json3 = json.toJson(list);
         String gson3 = gson.toJson(list);
-        assertEquals(json3, gson3);
+        assertEquals(gson3, json3);
+    }
 
+    @Test
+    public void testPrimitivToJson() {
         String json4 = json.toJson(string);
         String gson4 = gson.toJson(string);
-        assertEquals(json4, gson4);
+        assertEquals(gson4, json4);
     }
 }

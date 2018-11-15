@@ -1,8 +1,8 @@
 package ru.otus;
 
 public class Student {
-    int age;
-     String name;
+    private int age;
+    private String name;
 
 
     public Student(int age, String name) {
@@ -12,8 +12,7 @@ public class Student {
 
     @Override
     public String toString() {
-        return "ru.otus.Student{" +
-                "age=" + age +
+        return "{age=" + age +
                 ", name='" + name + '\'' +
                 '}';
     }
